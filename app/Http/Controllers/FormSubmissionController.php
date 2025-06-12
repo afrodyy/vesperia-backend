@@ -25,10 +25,23 @@ class FormSubmissionController extends Controller
         return $value;
     }
 
+    public function index()
+    {
+        $submissions = FormSubmission::with('form')
+            ->latest()
+            ->get();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Form Submissions fecthed successfully',
+            'data' => $submissions
+        ]);
+    }
+
     public function show(FormSubmission $submission)
     {
         $submission->load([
-            'form',
+            'form.fields.options',
             'answers.field'
         ]);
 
@@ -36,7 +49,25 @@ class FormSubmissionController extends Controller
             'id' => $submission->id,
             'form' => [
                 'id' => $submission->form->id,
-                'name' => $submission->form->name
+                'name' => $submission->form->name,
+                'fields' => $submission->form->fields->map(function ($field) {
+                    return [
+                        'id' => $field->id,
+                        'label' => $field->label,
+                        'type' => $field->type,
+                        'sub_type' => $field->sub_type,
+                        'description' => $field->description,
+                        'parent_id' => $field->parent_id,
+                        'options' => $field->options->map(function ($opt) {
+                            return [
+                                'id' => $opt->id,
+                                'label' => $opt->label,
+                                'value' => $opt->value,
+                                'parent_id' => $opt->parent_id,
+                            ];
+                        })
+                    ];
+                })
             ],
             'user_identifier' => $submission->user_identifier,
             'submitted_at' => $submission->created_at,

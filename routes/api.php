@@ -14,4 +14,5 @@ Route::prefix('forms')->group(function () {
 });
 
 Route::post('/fields/{field}/options', [FormFieldOptionController::class, 'store']);
+Route::get('/submissions', [FormSubmissionController::class, 'index']);
 Route::get('/submissions/{submission}', [FormSubmissionController::class, 'show']);
