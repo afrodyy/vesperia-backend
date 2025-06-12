@@ -90,12 +90,24 @@ class FormSubmissionController extends Controller
 
     public function store(Request $request, Form $form)
     {
-        $request->validate([
+        $validated = $request->validate([
             'user_identifier' => 'nullable|string|max:255',
             'answers' => 'required|array',
-            'answers.*.form_field_id' => 'required|exists:form_fields,id',
+            'answers.*.form_field_id' => 'required',
             'answers.*.value' => 'nullable'
         ]);
+
+        $fieldIds = collect($validated['answers'])->pluck('form_field_id')->unique();
+        $validFieldIds = $form->fields()->whereIn('id', $fieldIds)->pluck('id')->toArray();
+
+        foreach ($fieldIds as $id) {
+            if (!in_array($id, $validFieldIds)) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Form invalid'
+                ], 422);
+            }
+        }
 
         DB::beginTransaction();
 
