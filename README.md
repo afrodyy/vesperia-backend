@@ -19,7 +19,7 @@ This is the backend implementation of the Software Engineer Test using **Laravel
 
 ```bash
 git clone https://github.com/afrodyy/vesperia-backend
-cd vesperia-backend/backend
+cd vesperia-backend
 ```
 
 ### 2. Install dependencies
@@ -115,4 +115,4 @@ Tests included:
 
 Once you've seeded the database and run the server, you can use the frontend to dynamically fetch and display the form, as well as submit it.
 
-Want to test with a frontend? Jump to the [React frontend README](../frontend/README.md) 🚀
+Want to test with a frontend? Jump to the [React frontend repository](https://github.com/afrodyy/vesperia-frontend) 🚀
