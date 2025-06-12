@@ -70,7 +70,7 @@ class FormSubmissionController extends Controller
                 })
             ],
             'user_identifier' => $submission->user_identifier,
-            'submitted_at' => $submission->created_at,
+            'created_at' => $submission->created_at,
             'answers' => $submission->answers->map(function ($answer) {
                 return [
                     'field_id' => $answer->form_field_id,
