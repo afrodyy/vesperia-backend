@@ -10,6 +10,53 @@ use Illuminate\Support\Facades\DB;
 
 class FormSubmissionController extends Controller
 {
+    private function decodeValue($value)
+    {
+        $decoded = json_decode($value, true);
+
+        if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+            return $decoded;
+        }
+
+        if (json_last_error() === JSON_ERROR_NONE && is_string($decoded)) {
+            return $decoded;
+        }
+
+        return $value;
+    }
+
+    public function show(FormSubmission $submission)
+    {
+        $submission->load([
+            'form',
+            'answers.field'
+        ]);
+
+        $data = [
+            'id' => $submission->id,
+            'form' => [
+                'id' => $submission->form->id,
+                'name' => $submission->form->name
+            ],
+            'user_identifier' => $submission->user_identifier,
+            'submitted_at' => $submission->created_at,
+            'answers' => $submission->answers->map(function ($answer) {
+                return [
+                    'field_id' => $answer->form_field_id,
+                    'field_label' => $answer->field->label,
+                    'field_type' => $answer->field->type,
+                    'value' => $this->decodeValue($answer->value)
+                ];
+            })
+        ];
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Submission fetched successfully',
+            'data' => $data
+        ], 200);
+    }
+
     public function store(Request $request, Form $form)
     {
         $request->validate([

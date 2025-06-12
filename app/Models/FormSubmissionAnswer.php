@@ -10,11 +10,11 @@ class FormSubmissionAnswer extends Model
 
     public function field()
     {
-        return $this->belongsTo(FormField::class);
+        return $this->belongsTo(FormField::class, 'form_field_id', 'id');
     }
 
-    public function submissions()
+    public function submission()
     {
-        return $this->hasMany(FormSubmission::class);
+        return $this->belongsTo(FormSubmission::class);
     }
 }
