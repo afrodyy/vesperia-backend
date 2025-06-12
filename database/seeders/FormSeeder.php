@@ -81,6 +81,6 @@ class FormSeeder extends Seeder
             }
         }
 
-        $this->command->info("Seeder selesai: form + fields + options sudah dibuat.");
+        $this->command->info("Seeding done: Forms + Fields + Options created.");
     }
 }
