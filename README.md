@@ -40,7 +40,7 @@ Edit your `.env` database config:
 DB_CONNECTION=pgsql
 DB_HOST=127.0.0.1
 DB_PORT=5432
-DB_DATABASE=vesperia_backend
+DB_DATABASE=your_db_name
 DB_USERNAME=your_db_user
 DB_PASSWORD=your_db_password
 ```
@@ -60,7 +60,7 @@ php artisan key:generate
 Make sure a database exists in PostgreSQL:
 
 ```sql
-CREATE DATABASE software_test;
+CREATE DATABASE your_db_name;
 ```
 
 ### b. Run migration and seeder
